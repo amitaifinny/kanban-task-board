@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import Board from './components/Board.jsx';
 import './App.css';
 import { getOrCreateGuest } from './lib/auth';
+import { supabase } from './lib/supabase';
 
 const STORAGE_KEY = 'flowboard-priority-projects';
 const seedTasks = [
