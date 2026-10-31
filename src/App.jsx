@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Board from './components/Board.jsx';
 import './App.css';
+import { getOrCreateGuest } from './lib/auth';
 
 const STORAGE_KEY = 'flowboard-priority-projects';
 const seedTasks = [
@@ -15,6 +16,12 @@ const seedTasks = [
 ];
 
 function App() {
+  // Guest authentication
+  const [guest, setGuest] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [authError, setAuthError] = useState(null);
+
+  // Existing task state
   const [tasks, setTasks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -25,6 +32,33 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
   const [newTaskStatus, setNewTaskStatus] = useState('todo');
+  useEffect(() => {
+  let active = true;
+
+  async function initializeAuth() {
+    try {
+      const user = await getOrCreateGuest();
+
+      if (active) {
+        setGuest(user);
+      }
+    } catch (error) {
+      if (active) {
+        setAuthError(error.message);
+      }
+    } finally {
+      if (active) {
+        setAuthLoading(false);
+      }
+    }
+  }
+
+  initializeAuth();
+
+  return () => {
+    active = false;
+  };
+}, []);
 
   function loadBoard() { setIsLoading(true); setLoadError(''); window.setTimeout(() => { try { const saved = window.localStorage.getItem(STORAGE_KEY); setTasks(saved ? JSON.parse(saved) : seedTasks); } catch { setLoadError('We could not load this board from your browser. Your local data may be unavailable.'); } finally { setIsLoading(false); } }, 420); }
   useEffect(() => { const timer = window.setTimeout(loadBoard, 0); return () => window.clearTimeout(timer); }, []);
@@ -37,6 +71,31 @@ function App() {
 
   const visibleTasks = useMemo(() => tasks.filter((task) => `${task.title} ${task.description}`.toLowerCase().includes(search.toLowerCase()) && (priority === 'All' || task.priority === priority)), [tasks, search, priority]);
   const hasFilters = Boolean(search || priority !== 'All');
+  if (authLoading) {
+  return (
+    <div className="state-screen" role="status">
+      <h1>Setting up your workspace...</h1>
+      <p>Creating or restoring your guest session.</p>
+    </div>
+  );
+}
+
+if (authError) {
+  return (
+    <div className="state-screen" role="alert">
+      <h1>Authentication failed</h1>
+      <p>{authError}</p>
+    </div>
+  );
+}
+
+if (!guest) {
+  return (
+    <div className="state-screen" role="alert">
+      <h1>Unable to start guest session</h1>
+    </div>
+  );
+}
   if (isLoading) return <div className="loading-screen" role="status" aria-live="polite"><div className="loading-brand"><span className="brand-mark">◆</span> Flowboard</div><div className="loading-copy"><span className="spinner" /><strong>Loading your workspace</strong><span>Fetching your latest tasks...</span></div><div className="skeleton-board"><div /><div /><div /><div /></div></div>;
   if (loadError) return <div className="state-screen" role="alert"><div className="state-icon error-icon">!</div><div className="state-label">BOARD LOAD ERROR</div><h1>Couldn’t open this board</h1><p>{loadError}</p><button className="primary-button" onClick={loadBoard}>Try again</button><span className="state-hint">If this keeps happening, refresh the page or check your browser storage.</span></div>;
 
