@@ -1,30 +1,4 @@
-import Column from './Column';
-
-const tasks = [
-  { id: 1, title: 'Create login page', priority: 'High', status: 'todo' },
-  { id: 2, title: 'Design task cards', priority: 'Medium', status: 'todo' },
-  { id: 3, title: 'Set up Supabase', priority: 'High', status: 'in_progress' },
-  { id: 4, title: 'Initialize GitHub', priority: 'Low', status: 'done' },
-];
-
-const columns = [
-  { id: 'todo', title: 'To Do' },
-  { id: 'in_progress', title: 'In Progress' },
-  { id: 'done', title: 'Done' },
-];
-
-function Board() {
-  return (
-    <div className="board">
-      {columns.map((column) => (
-        <Column
-          key={column.id}
-          title={column.title}
-          tasks={tasks.filter((task) => task.status === column.id)}
-        />
-      ))}
-    </div>
-  );
-}
-
+import Column from './Column.jsx';
+const columns = [{ id: 'todo', title: 'To Do', accent: 'coral' }, { id: 'in_progress', title: 'In Progress', accent: 'blue' }, { id: 'in_review', title: 'In Review', accent: 'violet' }, { id: 'done', title: 'Done', accent: 'green' }];
+function Board({ tasks, onMoveTask, onAddTask, onEditTask, onDeleteTask, hasFilters, onClearFilters }) { const counts = columns.map((column) => tasks.filter((task) => task.status === column.id).length); const maxCount = Math.max(...counts, 1); return <div className="board">{columns.map((column, index) => <Column key={column.id} {...column} tasks={tasks.filter((task) => task.status === column.id)} progress={(counts[index] / maxCount) * 100} onMoveTask={onMoveTask} onAddTask={onAddTask} onEditTask={onEditTask} onDeleteTask={onDeleteTask} hasFilters={hasFilters} onClearFilters={onClearFilters} />)}</div>; }
 export default Board;
