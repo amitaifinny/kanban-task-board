@@ -1,19 +1,12 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
-
-
+import Board from './components/Board.jsx';
 import './App.css';
-
 
 function App() {
   return (
-    <div>
+    <main>
       <h1>Kanban Task Board</h1>
-      <p>React is working!</p>
-    </div>
+      <Board />
+    </main>
   );
 }
 
