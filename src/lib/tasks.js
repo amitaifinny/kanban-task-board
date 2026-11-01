@@ -23,7 +23,7 @@ export function taskFromRow(row) {
   return {
     id: row.id,
     title: row.title,
-    description: row.description || 'A new task ready to be picked up.',
+    description: row.description || '',
     priority: priorityFromDatabase[row.priority] || 'Medium',
     due: fromPostgresDate(row.due_date),
     dueDate: row.due_date || null,
