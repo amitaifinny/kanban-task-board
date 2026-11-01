@@ -114,6 +114,13 @@ body { background: #191919; }
 .page-heading .primary-button { color: #162235; background: #91c9ff; box-shadow: 0 5px 18px #91c9ff35; }
 .page-heading .primary-button:hover { background: #a7d4ff; }
 
+/* Minimal application branding retained above the board workspace. */
+.app-shell::before { content: '◆  Flowboard'; display: flex; align-items: center; height: 56px; padding: 0 4.5vw; border-bottom: 1px solid #303b4d; color: #eef3fa; background: #1f2c42; font: 700 18px 'Space Grotesk', sans-serif; letter-spacing: -.3px; }
+@media (max-width: 620px) { .app-shell::before { padding: 0 16px; } }
+
+/* Keep the brand quiet and integrated with the workspace. */
+.app-shell::before { content: '•  Flowboard'; height: 48px; border-bottom-color: #30302e; color: #b8b9b5; background: transparent; font-size: 15px; font-weight: 600; letter-spacing: -.15px; }
+
 /* Slightly lifted dark palette for easier everyday reading */
 body { background: #232323; }
 .app-shell, .workspace { background: #232323; }
@@ -139,3 +146,16 @@ body { background: #232323; }
 .task-list.is-scrollable { max-height: none; overflow: visible; padding-right: 0; scrollbar-width: auto; scrollbar-color: auto; }.task-list.is-scrollable::-webkit-scrollbar { width: auto; }.task-list.is-scrollable::-webkit-scrollbar-thumb { background: initial; border: initial; }
 .form-error { margin-bottom: 14px; padding: 9px 10px; border: 1px solid #704b50; border-radius: 7px; color: #f4b5b0; background: #3d292b; font-size: 12px; line-height: 1.4; }
 .column-heading h2 { font-size: 16px; }.task-card h3 { font-size: 16px; }.task-card p { font-size: 13px; }.task-meta { font-size: 12px; }.priority { font-size: 11px; }.search-box input, .toolbar select { font-size: 14px; }.task-count, .sync-state { font-size: 12px; }.add-task { font-size: 14px; }.subtitle { font-size: 16px; }
+.app-shell::before { content: 'Flowboard'; padding-left: calc(4.5vw + 40px); background-image: url('/kanban-logo.png'); background-repeat: no-repeat; background-position: 4.5vw center; background-size: 30px auto; }
+.loading-brand .brand-mark { width: 27px; height: 27px; color: transparent; background: url('/kanban-logo.png') center / contain no-repeat; border-radius: 0; transform: none; }
+@media (max-width: 620px) { .app-shell::before { padding-left: 56px; background-position: 16px center; background-size: 30px auto; } }
+.app-shell::before { height: 64px; padding-left: calc(4.5vw + 50px); background-size: 200px 200px; background-position: calc(4.5vw - 82px) calc(50% - 84px); font-size: 17px; }
+.app-shell::before { background-position: calc(4.5vw - 82px) -52px; }
+.app-shell::before { padding-left: calc(4.5vw + 44px); background-size: 170px 170px; background-position: calc(4.5vw - 70px) -40px; }
+.loading-brand .brand-mark { width: 40px; height: 56px; background-size: 200px 200px; background-position: center calc(50% - 84px); }
+.loading-brand .brand-mark { width: 36px; height: 50px; background-size: 170px 170px; background-position: center -47px; }
+@media (max-width: 620px) { .app-shell::before { padding-left: 66px; background-position: -66px -52px; } }
+@media (max-width: 620px) { .app-shell::before { padding-left: 60px; background-position: -70px -40px; background-size: 170px 170px; } }
+.app-shell::before { content: 'Flowboard'; padding-left: 4.5vw; background-image: none; background-size: auto; background-position: 0 center; }
+.loading-brand .brand-mark { display: none; }
+@media (max-width: 620px) { .app-shell::before { padding-left: 16px; } }
